@@ -3,6 +3,11 @@ var router = express.Router();
 const admin = require('firebase-admin');
 const { db } = require('../firebase');
 
+function layAnhDauTien(content) {
+    const regex = /<img.*?src="(.*?)"/; 
+    const match = content.match(regex);
+    return match ? match[1] : "/images/noimage.png"; 
+}
 // GET: Danh sách bài viết
 router.get('/', async (req, res) => {
     try {
@@ -166,7 +171,8 @@ router.get('/chitiet/:id', async (req, res) => {
         req.session.history.unshift({
             id: bv.id,
             TieuDe: bv.TieuDe,
-            HinhAnhDauTien: bv.HinhAnhDauTien
+            HinhAnhDauTien: bv.HinhAnhDauTien,
+            TomTat: bv.TomTat || ""
         });
         if (req.session.history.length > 10) {
             req.session.history.pop();

@@ -1,134 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include('head') %>
-    <style>
-        .featured-card:hover { transform: translateY(-5px); transition: 0.3s; }
-        .sticky-sidebar { position: sticky; top: 20px; }
-        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    </style>
+        <style>
+            .featured-card:hover {
+                transform: translateY(-5px);
+                transition: 0.3s;
+            }
+
+            .sticky-sidebar {
+                position: sticky;
+                top: 20px;
+            }
+
+            .line-clamp-2 {
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+        </style>
 </head>
 
 <body>
     <%- include('navbar') %>
 
-    <div class="container mt-4">
-        <% if (currentPage === 1 && typeof tinNoiBat !== 'undefined' && tinNoiBat.length > 0) { %>
-            <section class="mb-5">
-                <h4 class="fw-bold mb-3 text-uppercase text-danger">Tin nổi bật</h4>
-                <div id="carouselExampleCaptions" class="carousel slide shadow-sm rounded overflow-hidden" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <% tinNoiBat.forEach((item, index) => { %>
-                            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="<%= index %>" class="<%= index === 0 ? 'active' : '' %>"></button>
-                        <% }) %>
-                    </div>
-                    <div class="carousel-inner">
-                        <% tinNoiBat.forEach((item, index) => { %>
-                            <div class="carousel-item <%= index === 0 ? 'active' : '' %>" data-bs-interval="5000">
-                                <div class="ratio ratio-21x9"> 
-                                    <img src="<%= item.HinhAnhDauTien %>" class="d-block w-100" style="object-fit: cover;" onerror="this.src='/images/noimage.png';">
-                                </div>
-                                <div class="carousel-caption d-none d-md-block" style="background: rgba(0,0,0,0.4); border-radius: 10px;">
-                                    <h3 class="fw-bold"><%= item.TieuDe %></h3>
-                                    <p><%= item.TomTat %></p>
-                                    <a href="/baiviet/chitiet/<%= item.id %>" class="btn btn-warning btn-sm">Xem ngay</a>
-                                </div>
-                            </div>
-                        <% }) %>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </button>
-                </div>
-                <hr class="my-4 text-muted">
-            </section>
-        <% } %>
-
-        <div class="row">
-            <div class="col-lg-8">
-                <h4 class="fw-bold mb-4 text-uppercase"><%= title %></h4>
-                <% if (baiviet.length > 0) { %>
-                    <div class="row">
-                        <% baiviet.forEach(item => { %>
-                            <div class="col-12 mb-4">
-                                <div class="card border-0 shadow-sm h-100 featured-card">
-                                    <div class="row g-0 align-items-center">
-                                        <div class="col-md-4">
-                                            <div class="ratio ratio-4x3">
-                                                <img src="<%= item.HinhAnhDauTien %>" class="img-fluid rounded-start" style="object-fit: cover;" onerror="this.src='/images/noimage.png';">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="card-body">
-                                                <h5 class="card-title fw-bold">
-                                                    <a href="/baiviet/chitiet/<%= item.id %>" class="text-decoration-none text-primary"><%= item.TieuDe %></a>
-                                                </h5>
-                                                <p class="card-text text-muted line-clamp-2 d-none d-md-block"><%= item.TomTat %></p>
-                                                <a href="/baiviet/chitiet/<%= item.id %>" class="btn btn-link btn-sm p-0 text-decoration-none">Xem chi tiết →</a>
-                                            </div>
-                                        </div>
+        <div class="container mt-4">
+            <% if (currentPage===1 && typeof tinNoiBat !=='undefined' && tinNoiBat.length> 0) { %>
+                <section class="mb-5">
+                    <h4 class="fw-bold mb-3 text-uppercase text-danger">Tin nổi bật</h4>
+                    <div id="carouselExampleCaptions" class="carousel slide shadow-sm rounded overflow-hidden"
+                        data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <% tinNoiBat.forEach((item, index)=> { %>
+                                <button type="button" data-bs-target="#carouselExampleCaptions"
+                                    data-bs-slide-to="<%= index %>" class="<%= index === 0 ? 'active' : '' %>"></button>
+                                <% }) %>
+                        </div>
+                        <div class="carousel-inner">
+                            <% tinNoiBat.forEach((item, index)=> { %>
+                                <div class="carousel-item <%= index === 0 ? 'active' : '' %>" data-bs-interval="5000">
+                                    <div class="ratio ratio-21x9">
+                                        <img src="<%= item.HinhAnhDauTien %>" class="d-block w-100"
+                                            style="object-fit: cover;" onerror="this.src='/images/noimage.png';">
+                                    </div>
+                                    <div class="carousel-caption d-none d-md-block"
+                                        style="background: rgba(0,0,0,0.4); border-radius: 10px;">
+                                        <h3 class="fw-bold">
+                                            <%= item.TieuDe %>
+                                        </h3>
+                                        <p>
+                                            <%= item.TomTat %>
+                                        </p>
+                                        <a href="/baiviet/chitiet/<%= item.id %>" class="btn btn-warning btn-sm">Xem
+                                            ngay</a>
                                     </div>
                                 </div>
-                            </div>
-                        <% }) %>
+                                <% }) %>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </button>
                     </div>
-
-                    <nav aria-label="Page navigation" class="my-5">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-                                <a class="page-link" href="/?page=<%= currentPage - 1 %>">Trước</a>
-                            </li>
-                            <% for(let i=1; i <= totalPages; i++) { %>
-                                <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                                    <a class="page-link" href="/?page=<%= i %>"><%= i %></a>
-                                </li>
-                            <% } %>
-                            <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
-                                <a class="page-link" href="/?page=<%= currentPage + 1 %>">Sau</a>
-                            </li>
-                        </ul>
-                    </nav>
-                <% } else { %>
-                    <div class="alert alert-light border shadow-sm text-center py-5">
-                        <p>Chưa có bài viết nào được đăng.</p>
-                    </div>
+                    <hr class="my-4 text-muted">
+                </section>
                 <% } %>
-            </div>
 
-            <aside class="col-lg-4 mt-4 mt-lg-0">
-                <div class="sticky-sidebar">
-                    <% if (typeof tinDaDoc !== 'undefined' && tinDaDoc.length > 0) { %>
-                        <div class="card border-0 shadow-sm bg-light mb-4">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h5 class="fw-bold mb-0"><i class="bi bi-clock-history"></i> Vừa xem</h5>
-                                    <a href="/lich-su-doc" class="text-decoration-none small">Xem tất cả</a>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h4 class="fw-bold mb-4 text-uppercase">
+                                <%= title %>
+                            </h4>
+                            <% if (baiviet.length> 0) { %>
+                                <div class="row">
+                                    <% baiviet.forEach(item=> { %>
+                                        <div class="col-12 mb-4">
+                                            <div class="card border-0 shadow-sm h-100 featured-card">
+                                                <div class="row g-0 align-items-center">
+                                                    <div class="col-md-4">
+                                                        <div class="ratio ratio-4x3">
+                                                            <img src="<%= item.HinhAnhDauTien %>"
+                                                                class="img-fluid rounded-start"
+                                                                style="object-fit: cover;"
+                                                                onerror="this.src='/images/noimage.png';">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title fw-bold">
+                                                                <a href="/baiviet/chitiet/<%= item.id %>"
+                                                                    class="text-decoration-none text-primary">
+                                                                    <%= item.TieuDe %>
+                                                                </a>
+                                                            </h5>
+                                                            <p
+                                                                class="card-text text-muted line-clamp-2 d-none d-md-block">
+                                                                <%= item.TomTat %>
+                                                            </p>
+                                                            <a href="/baiviet/chitiet/<%= item.id %>"
+                                                                class="btn btn-link btn-sm p-0 text-decoration-none">Xem
+                                                                chi tiết →</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% }) %>
                                 </div>
-                                <% tinDaDoc.forEach(item => { %>
-                                    <div class="d-flex mb-3 align-items-start border-bottom pb-2">
-                                        <img src="<%= item.HinhAnhDauTien %>" class="rounded" style="width: 70px; height: 50px; object-fit: cover;" onerror="this.src='/images/noimage.png';">
-                                        <div class="ms-3">
-                                            <h6 class="mb-0 fw-bold" style="font-size: 0.85rem;">
-                                                <a href="/baiviet/chitiet/<%= item.id %>" class="text-decoration-none text-dark"><%= item.TieuDe %></a>
+
+                                <nav aria-label="Page navigation" class="my-5">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                                            <a class="page-link" href="/?page=<%= currentPage - 1 %>">Trước</a>
+                                        </li>
+                                        <% for(let i=1; i <=totalPages; i++) { %>
+                                            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                                <a class="page-link" href="/?page=<%= i %>">
+                                                    <%= i %>
+                                                </a>
+                                            </li>
+                                            <% } %>
+                                                <li
+                                                    class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                                                    <a class="page-link" href="/?page=<%= currentPage + 1 %>">Sau</a>
+                                                </li>
+                                    </ul>
+                                </nav>
+                                <% } else { %>
+                                    <div class="alert alert-light border shadow-sm text-center py-5">
+                                        <p>Chưa có bài viết nào được đăng.</p>
+                                    </div>
+                                    <% } %>
+                        </div>
+
+                        <aside class="col-lg-4 mt-4 mt-lg-0">
+                            <div class="sticky-sidebar">
+                                <% if (typeof tinDaDoc !=='undefined' && tinDaDoc.length> 0) { %>
+                                    <div class="card border-0 shadow-sm bg-light mb-4">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                                <h5 class="fw-bold mb-0"><i class="bi bi-clock-history"></i> Vừa xem
+                                                </h5>
+                                                <a href="/lich-su-doc" class="text-decoration-none small">Xem tất cả</a>
+                                            </div>
+                                            <% tinDaDoc.forEach(item=> { %>
+                                                <div class="d-flex mb-3 align-items-start border-bottom pb-2">
+                                                    <img src="<%= item.HinhAnhDauTien %>" class="rounded"
+                                                        style="width: 70px; height: 50px; object-fit: cover;"
+                                                        onerror="this.src='/images/noimage.png';">
+                                                    <div class="ms-3">
+                                                        <h6 class="mb-0 fw-bold" style="font-size: 0.85rem;">
+                                                            <a href="/baiviet/chitiet/<%= item.id %>"
+                                                                class="text-decoration-none text-dark">
+                                                                <%= item.TieuDe %>
+                                                            </a>
+                                                        </h6>
+                                                        <p class="text-muted mb-0 small"
+                                                            style="font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                                            <%= item.TomTat %>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <% }) %>
+                                        </div>
+                                    </div>
+                                    <% } %>
+
+                                        <div class="p-3 rounded bg-warning text-dark shadow-sm">
+                                            <h6 class="fw-bold mb-0 text-center">
+                                                📅 Hôm nay: <%= new Date().toLocaleDateString('vi-VN') %>
                                             </h6>
                                         </div>
-                                    </div>
-                                <% }) %>
                             </div>
-                        </div>
-                    <% } %>
-
-                    <div class="p-3 rounded bg-warning text-dark shadow-sm">
-                        <h6 class="fw-bold mb-0 text-center">
-                            📅 Hôm nay: <%= new Date().toLocaleDateString('vi-VN') %>
-                        </h6>
+                        </aside>
                     </div>
-                </div>
-            </aside>
-        </div> </div> <%- include('footer') %>
-    <%- include('javascript') %>
+        </div> <%- include('footer') %>
+            <%- include('javascript') %>
 </body>
+
 </html>
