@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<%- include('head') %>
+</head>
+
+<body>
+
+	<!-- Menu ngang -->
+	<%- include("navbar") %>
+		<div class="container mt-4">
+			<div class="row justify-content-center">
+				<div class="col-md-9">
+					<!-- Nội dung chính -->
+					<div class="card mt-3">
+						<div class="card-header">
+							<%= title %>
+						</div>
+						<div class="card-body table-responsive">
+
+							<table class="table table-bordered table-hover table-sm mb-0">
+								<thead>
+									<tr>
+										<th width="5%">#</th>
+										<th width="15%">Người đăng</th>
+										<th width="15%">Chủ đề</th>
+										<th width="40%">Tiêu đề</th>
+										<th width="10%">Ngày đăng</th>
+										<th width="5%" title="Tình trạng kiểm duyệt?">Duyệt</th>
+										<th width="5%">Sửa</th>
+										<th width="5%">Xóa</th>
+									</tr>
+								</thead>
+								<tbody>
+									<% var stt=1; %>
+										<% baiviet.forEach(bv=> { %>
+											<tr>
+												<td class="align-middle">
+													<%= stt++ %>
+												</td>
+												<td class="align-middle small">
+													<%= bv.TaiKhoan.TenDangNhap %>
+												</td>
+												<td class="align-middle small">
+													<%= bv.TenChuDeHienThi %>
+												</td>
+												<td class="align-middle small">
+													<%= bv.TieuDe %>
+												</td>
+												<td class="align-middle small text-center">
+													<%= bv.NgayHienThi %>
+												</td>
+												<td class="align-middle text-center">
+													<% if(bv.KiemDuyet==1) { %>
+														<a href="/baiviet/duyet/<%= bv.id %>"
+															onclick="return confirm('Bạn có muốn bỏ duyệt bài viết này không? Bài viết sẽ không còn hiển thị trên trang chủ.');">
+															<i class="bi bi-check-circle-fill text-success fs-5"></i>
+														</a>
+														<% } else { %>
+															<a href="/baiviet/duyet/<%= bv.id %>"
+																onclick="return confirm('Bạn có muốn duyệt bài viết này để hiển thị lên trang web không?');">
+																<i class="bi bi-x-circle text-danger fs-5"></i>
+															</a>
+															<% } %>
+												</td>
+												<td class="align-middle text-center">
+													<a href="/baiviet/sua/<%= bv.id %>"><i
+															class="bi bi-pencil-square"></i></a>
+												</td>
+												<td class="align-middle text-center">
+													<a href="/baiviet/xoa/<%= bv.id %>"
+														onclick="return confirm('Bạn có muốn xóa bài viết <%= bv.TieuDe %> không?');">
+														<i class="bi bi-trash text-danger"></i>
+													</a>
+												</td>
+											</tr>
+											<% }); %>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Footer -->
+		<%- include('footer') %>
+			<%- include('javascript') %>
+</body>
+
+</html>

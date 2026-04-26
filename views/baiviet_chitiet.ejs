@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('head') %>
+        <style>
+            .news-content img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 8px;
+                margin: 20px 0;
+            }
+
+            .news-meta {
+                font-size: 0.9rem;
+                color: #6c757d;
+            }
+
+            .comment-item {
+                transition: all 0.3s ease;
+            }
+
+            .comment-item:hover {
+                background-color: #f8f9fa !important;
+            }
+
+            .breadcrumb-item a {
+                color: #0237b4;
+                text-decoration: none;
+            }
+
+            .breadcrumb-item.active {
+                max-width: 300px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .dropdown-menu {
+                z-index: 1050;
+            }
+        </style>
+</head>
+
+<body>
+    <%- include('navbar') %>
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous"
+            src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v18.0" nonce="random_nonce">
+            </script>
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                            <li class="breadcrumb-item">
+                                <a href="/chude/<%= baiviet.TenChuDe %>">
+                                    <%= baiviet.TenChuDe %>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <%= baiviet.TieuDe %>
+                            </li>
+                        </ol>
+                    </nav>
+
+                    <h1 class="fw-bold mb-3">
+                        <%= baiviet.TieuDe %>
+                    </h1>
+                    <div class="news-meta mb-4 pb-3 border-bottom d-flex align-items-center gap-4">
+                        <span><i class="bi bi-calendar3"></i> Ngày đăng: <%= baiviet.NgayDang %></span>
+                        <span class="ms-4"><i class="bi bi-eye"></i> Lượt xem: <%= baiviet.LuotXem || 0 %></span>
+                        <span class="me-4"><i class="bi bi-person-fill text-primary"></i> Tác giả: <strong><%= baiviet.TenDangNhap || "Ban biên tập" %></strong></span>
+                    </div>
+
+                    <div class="lead fw-bold mb-4 text-secondary" style="font-size: 1.2rem;">
+                        <%= baiviet.TomTat %>
+                    </div>
+
+                    <div class="news-content mb-5" style="line-height: 1.8; font-size: 1.1rem; text-align: justify;">
+                        <%- baiviet.NoiDung %>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 my-4 py-3 border-top border-bottom">
+                        <span class="fw-bold text-secondary">Bạn thấy bài viết này thế nào?</span>
+
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent('https://your-domain.com/baiviet/chitiet/' + baiviet.id) %>"
+                            target="_blank" class="btn btn-primary d-flex align-items-center"
+                            style="background-color: #1877f2; border: none; border-radius: 20px; padding: 5px 15px;">
+                            <i class="bi bi-facebook me-2"></i> Chia sẻ
+                        </a>
+
+                        <button onclick="copyLink()" class="btn btn-outline-secondary d-flex align-items-center"
+                            style="border-radius: 20px; padding: 5px 15px;">
+                            <i class="bi bi-link-45deg me-1"></i> Sao chép link
+                        </button>
+                    </div>
+
+                    <script>
+                        function copyLink() {
+                            navigator.clipboard.writeText(window.location.href);
+                            alert("Đã sao chép liên kết bài viết!");
+                        }
+                    </script>
+                    <div class="card mt-5 shadow-sm border-0 bg-light">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-4" style="color: #0237b4;">Bình luận cộng đồng</h5>
+
+                            <form action="/baiviet/binhluan/<%= baiviet.id %>" method="POST" class="mb-5">
+                                <% if (typeof tenNguoiDung !=='undefined' && tenNguoiDung) { %>
+                                    <div class="mb-3">
+                                        <span class="badge bg-info text-dark p-2">
+                                            <i class="bi bi-person-fill"></i>
+                                            <%= tenNguoiDung %>
+                                        </span>
+                                        <input type="hidden" name="HoTen" value="<%= tenNguoiDung %>">
+                                    </div>
+                                    <% } else { %>
+                                        <div class="mb-3">
+                                            <input type="text" name="HoTen" class="form-control"
+                                                placeholder="Tên của bạn..." required>
+                                        </div>
+                                        <% } %>
+
+                                            <div class="mb-3">
+                                                <textarea name="NoiDungBL" class="form-control" rows="3"
+                                                    placeholder="Chia sẻ ý kiến của bạn..." required></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary px-4"
+                                                style="background-color: #0237b4;">Gửi bình luận</button>
+                            </form>
+
+                            <div class="comment-list">
+                                <% if (typeof binhluan !=='undefined' && binhluan.length> 0) { %>
+                                    <% binhluan.forEach(bl=> { %>
+                                        <% let userHienTai=(typeof tenNguoiDung !=='undefined' ) ? tenNguoiDung : null;
+                                            let quyenHienTai=(typeof quyenHan !=='undefined' ) ? quyenHan : 'user' ; let
+                                            laChuBinhLuan=(userHienTai && userHienTai===bl.TenDangNhap); let
+                                            laChuBaiViet=(userHienTai && userHienTai===baiviet.TenDangNhap); let
+                                            laAdmin=(quyenHienTai==='admin' ); let coQuyenXoa=(laChuBinhLuan ||
+                                            laChuBaiViet || laAdmin); let coQuyenSua=laChuBinhLuan; %>
+
+                                            <div class="d-flex mb-3 bg-white p-3 rounded border comment-item shadow-sm">
+                                                <div class="flex-shrink-0">
+                                                    <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(bl.HoTen) %>&background=random"
+                                                        class="rounded-circle" width="45">
+                                                </div>
+                                                <div class="ms-3 w-100">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div>
+                                                            <span class="fw-bold text-dark">
+                                                                <%= bl.HoTen %>
+                                                            </span>
+                                                            <% if (bl.TenDangNhap===baiviet.TenDangNhap) { %>
+                                                                <span class="badge bg-secondary"
+                                                                    style="font-size: 0.6rem;">Tác giả</span>
+                                                                <% } %>
+                                                                    <small class="text-muted ms-2"
+                                                                        style="font-size: 0.75rem;">
+                                                                        <%= bl.NgayHienThi %>
+                                                                    </small>
+                                                        </div>
+
+                                                        <% if (coQuyenXoa || coQuyenSua) { %>
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-sm border-0 p-1" type="button"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <i class="bi bi-three-dots-vertical text-muted"></i>
+                                                                </button>
+                                                                <ul
+                                                                    class="dropdown-menu dropdown-menu-end shadow border-0">
+                                                                    <% if (coQuyenSua) { %>
+                                                                        <li>
+                                                                            <a class="dropdown-item" href="#"
+                                                                                onclick="hienThiSuaBinhLuan('<%= bl.id %>', '<%= bl.NoiDungBL %>')">
+                                                                                <i class="bi bi-pencil me-2"></i>Sửa
+                                                                            </a>
+                                                                        </li>
+                                                                        <% } %>
+
+                                                                            <% if (coQuyenXoa) { %>
+                                                                                <li>
+                                                                                    <a class="dropdown-item text-danger"
+                                                                                        href="/baiviet/binhluan/xoa/<%= bl.id %>?idBaiViet=<%= baiviet.id %>"
+                                                                                        onclick="return confirm('Bạn có chắc muốn xóa bình luận này?')">
+                                                                                        <i
+                                                                                            class="bi bi-trash me-2"></i>Xóa
+                                                                                    </a>
+                                                                                </li>
+                                                                                <% } %>
+                                                                </ul>
+                                                            </div>
+                                                            <% } %>
+                                                    </div>
+                                                    <div class="text-dark mt-2">
+                                                        <%= bl.NoiDungBL %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <% }); %>
+                                                <% } else { %>
+                                                    <div class="text-center py-4">
+                                                        <p class="text-muted fst-italic">Chưa có bình luận nào. Hãy là
+                                                            người đầu tiên chia sẻ cảm nghĩ!</p>
+                                                    </div>
+                                                    <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-5">
+                    <a href="/" class="btn btn-secondary mb-5 px-4">
+    <i class="bi bi-arrow-left"></i> Quay lại trang chủ
+</a>
+                </div>
+            </div>
+        </div>
+
+        <%- include('footer') %>
+            <%- include('javascript') %>
+           <script>
+</script>
+</body>
+
+</html>

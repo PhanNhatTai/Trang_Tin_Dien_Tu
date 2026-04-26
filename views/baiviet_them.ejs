@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<%- include('head') %>
+</head>
+
+<body>
+		<!-- Menu ngang -->
+		<%- include("navbar") %>
+		<div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+		<!-- Nội dung chính -->
+		<div class="card mt-3">
+			<div class="card-header">
+				<%= title %>
+			</div>
+			<div class="card-body">
+				<form action="/baiviet/them" method="post" class="needs-validation" novalidate>
+					<div class="mb-3">
+						<label for="TenChuDe" class="form-label">Chủ đề</label>
+						<select class="form-select" id="TenChuDe" name="TenChuDe" required>
+							<option value="">-- Chọn --</option>
+							<% chude.forEach(cd=> { %>
+								<option value="<%= cd.TenChuDe %>">
+									<%= cd.TenChuDe %>
+								</option>
+								<% }) %>
+						</select>
+					</div>
+					<div class="mb-3">
+						<label for="TieuDe" class="form-label">Tiêu đề</label>
+						<input type="text" class="form-control" id="TieuDe" name="TieuDe" value="" required />
+					</div>
+					<div class="mb-3">
+						<label for="TomTat" class="form-label">Tóm tắt bài viết</label>
+						<textarea class="form-control" id="TomTat" name="TomTat" required></textarea>
+					</div>
+					<div class="mb-3">
+						<label for="NoiDung" class="form-label">Nội dung bài viết</label>
+						<textarea class="form-control" id="NoiDung" name="NoiDung" required></textarea>
+					</div>
+					<button type="submit" class="btn btn-primary"><i class="bi bi-cloud-arrow-up"></i> Đăng bài viết</button>
+				</form>
+			</div>
+		</div>
+				</div>
+				</div>
+		</div>
+		<!-- Footer -->
+		<%- include("footer") %>
+	
+	
+	<%- include("javascript") %>
+	<script src="https://cdn.ckeditor.com/4.22.1/full/ckeditor.js"></script>
+	<script>
+		CKEDITOR.replace('NoiDung', {
+			customConfig: 'http://127.0.0.1:3000/js/config.js'
+		});
+	</script>
+</body>
+
+</html>

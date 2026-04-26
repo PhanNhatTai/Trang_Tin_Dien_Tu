@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<%- include('head') %>
+</head>
+
+<body>
+	
+		<!-- Menu ngang -->
+		<%- include('navbar') %>
+		<div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+		<!-- Nội dung chính -->
+		<div class="card mt-3">
+			<div class="card-header"><%= title %></div>
+			<div class="card-body table-responsive">
+				<a href="/chude/them" class="btn btn-primary mb-2"><i class="bi bi-plus-lg"></i> Thêm mới</a>
+				<table class="table table-bordered table-hover table-sm mb-0">
+					<thead>
+						<tr>
+							<th width="5%">#</th>
+							<th>Tên chủ đề</th>
+							<th width="5%">Sửa</th>
+							<th width="5%">Xóa</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% var stt = 1; %>
+						<% chude.forEach(cd => { %>
+							<tr>
+								<th class="align-middle"><%= stt++ %></th>
+								<td class="align-middle"><%= cd.TenChuDe %></td>
+								<td class="align-middle text-center">
+									<a href="/chude/sua/<%= cd.id %>"><i class="bi bi-pencil-square"></i></a></a>
+								</td>
+								<td class="align-middle text-center">
+									<a href="/chude/xoa/<%= cd.id %>" onclick="return confirm('Bạn có muốn xóa chủ đề <%= cd.TenChuDe %> không?');"><i class="bi bi-trash text-danger"></i></a>
+								</td>
+							</tr>
+						<% }); %>
+					</tbody>
+				</table>
+			</div>
+		</div>
+				</div>
+			</div>
+			</div>
+		<!-- Footer -->
+		<%- include('footer') %>
+	
+	
+	<%- include('javascript') %>
+</body>
+
+</html>

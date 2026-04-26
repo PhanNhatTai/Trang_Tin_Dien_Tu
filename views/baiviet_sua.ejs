@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('head') %>
+</head>
+
+<body>
+
+    <!-- Menu ngang -->
+    <%- include('navbar') %>
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+                    <div class="container mt-4">
+                        <div class="card shadow">
+                            <div class="card-header bg-warning text-dark">
+                                <h5><i class="bi bi-pencil-square"></i> Chỉnh sửa bài viết</h5>
+                            </div>
+                            <div class="card-body">
+                                <form action="/baiviet/sua/<%= baiviet.id %>" method="POST">
+                                    <input type="hidden" name="returnUrl" value="<%= req.header('Referer') %>">
+                                    <div class="mb-3">
+                                        <label class="form-label">Tiêu đề bài viết</label>
+                                        <input type="text" name="TieuDe" class="form-control"
+                                            value="<%= baiviet.TieuDe %>" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Chủ đề</label>
+                                        <select name="TenChuDe" class="form-select">
+                                            <% dsChuDe.forEach(cd=> { %>
+                                                <option value="<%= cd.TenChuDe %>" <%=(cd.TenChuDe===baiviet.TenChuDe)
+                                                    ? 'selected' : '' %>>
+                                                    <%= cd.TenChuDe %>
+                                                </option>
+                                                <% }) %>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Tóm tắt</label>
+                                        <textarea name="TomTat" class="form-control"
+                                            rows="3"><%= baiviet.TomTat %></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Nội dung chi tiết</label>
+                                        <textarea name="NoiDung" class="form-control"
+                                            rows="10"><%= baiviet.NoiDung %></textarea>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Cập nhật
+                                        bài viết</button>
+                                    <a href="javascript:history.back()" class="btn btn-secondary">
+                                        <i class="bi bi-x-circle"></i> Hủy bỏ
+                                    </a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include('footer') %>
+        <%- include('javascript') %>

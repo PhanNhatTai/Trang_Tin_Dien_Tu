@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<%- include('head') %>
+</head>
+
+<body>
+	
+		<!-- Menu ngang -->
+		<%- include('navbar') %>
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+        <div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-danger shadow">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Xác nhận xóa tài khoản</h4>
+                </div>
+                <div class="card-body text-center">
+                    <p class="fs-5">Bạn có chắc chắn muốn xóa tài khoản này không?</p>
+                    <hr>
+                    <div class="mb-4 text-start">
+                        <p><strong>Họ và tên:</strong> <%= user.HoVaTen %></p>
+                        <p><strong>Tên đăng nhập:</strong> <%= user.TenDangNhap %></p>
+                        <p><strong>Email:</strong> <%= user.Email %></p>
+                    </div>
+                    
+                    <form action="/taikhoan/xoa/<%= user.id %>" method="POST">
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <a href="/taikhoan" class="btn btn-secondary me-md-2">
+                                <i class="bi bi-arrow-left"></i> Quay lại
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Đồng ý xóa vĩnh viễn
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="alert alert-warning mt-3">
+                <i class="bi bi-info-circle"></i> <strong>Lưu ý:</strong> Hành động này không thể hoàn tác. Mọi dữ liệu liên quan đến tài khoản này sẽ bị xóa khỏi hệ thống.
+            </div>
+        </div>
+    </div>
+</div>
+                </div>
+            </div>
+<%- include('footer') %>
+
+<%- include('javascript') %>
+</body>
+
+</html>
