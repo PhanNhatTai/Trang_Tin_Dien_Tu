@@ -71,7 +71,9 @@
                     <div class="news-meta mb-4 pb-3 border-bottom d-flex align-items-center gap-4">
                         <span><i class="bi bi-calendar3"></i> Ngày đăng: <%= baiviet.NgayDang %></span>
                         <span class="ms-4"><i class="bi bi-eye"></i> Lượt xem: <%= baiviet.LuotXem || 0 %></span>
-                        <span class="me-4"><i class="bi bi-person-fill text-primary"></i> Tác giả: <strong><%= baiviet.TenDangNhap || "Ban biên tập" %></strong></span>
+                        <span class="me-4"><i class="bi bi-person-fill text-primary"></i> Tác giả: <strong>
+                                <%= baiviet.TenDangNhap || "Ban biên tập" %>
+                            </strong></span>
                     </div>
 
                     <div class="lead fw-bold mb-4 text-secondary" style="font-size: 1.2rem;">
@@ -84,7 +86,7 @@
                     <div class="d-flex align-items-center gap-3 my-4 py-3 border-top border-bottom">
                         <span class="fw-bold text-secondary">Bạn thấy bài viết này thế nào?</span>
 
-                        <a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent('https://your-domain.com/baiviet/chitiet/' + baiviet.id) %>"
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent('https://trang-tin-dien-tu.onrender.com/baiviet/chitiet/' + baiviet.id) %>"
                             target="_blank" class="btn btn-primary d-flex align-items-center"
                             style="background-color: #1877f2; border: none; border-radius: 20px; padding: 5px 15px;">
                             <i class="bi bi-facebook me-2"></i> Chia sẻ
@@ -134,11 +136,12 @@
                                 <% if (typeof binhluan !=='undefined' && binhluan.length> 0) { %>
                                     <% binhluan.forEach(bl=> { %>
                                         <% let userHienTai=(typeof tenNguoiDung !=='undefined' ) ? tenNguoiDung : null;
-                                            let quyenHienTai=(typeof quyenHan !=='undefined' ) ? quyenHan : 'user' ; let
-                                            laChuBinhLuan=(userHienTai && userHienTai===bl.TenDangNhap); let
-                                            laChuBaiViet=(userHienTai && userHienTai===baiviet.TenDangNhap); let
-                                            laAdmin=(quyenHienTai==='admin' ); let coQuyenXoa=(laChuBinhLuan ||
-                                            laChuBaiViet || laAdmin); let coQuyenSua=laChuBinhLuan; %>
+                                            let quyenHienTai=(typeof quyenHan !=='undefined' ) ? quyenHan : 'user' ; 
+                                            let laChuBinhLuan=(userHienTai && userHienTai===bl.TenDangNhap); 
+                                            let laChuBaiViet=(userHienTai && userHienTai===baiviet.TenDangNhap); 
+                                            let laAdmin=(quyenHienTai==='admin' ); 
+                                            let coQuyenXoa=(laChuBinhLuan || laChuBaiViet || laAdmin); 
+                                            let coQuyenSua=laChuBinhLuan; %>
 
                                             <div class="d-flex mb-3 bg-white p-3 rounded border comment-item shadow-sm">
                                                 <div class="flex-shrink-0">
@@ -210,16 +213,16 @@
 
                     <hr class="my-5">
                     <a href="/" class="btn btn-secondary mb-5 px-4">
-    <i class="bi bi-arrow-left"></i> Quay lại trang chủ
-</a>
+                        <i class="bi bi-arrow-left"></i> Quay lại trang chủ
+                    </a>
                 </div>
             </div>
         </div>
 
         <%- include('footer') %>
             <%- include('javascript') %>
-           <script>
-</script>
+                <script>
+                </script>
 </body>
 
 </html>
