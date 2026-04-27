@@ -8,8 +8,14 @@ function layAnhDauTien(content) {
     const match = content.match(regex);
     return match ? match[1] : "/images/noimage.png"; 
 }
+const kiemTraQuyenAdmin = (req, res, next) => {
+    if (req.session && req.session.QuyenHan === 'admin') {
+        return next();
+    }
+    res.redirect('/'); 
+}
 // GET: Danh sách bài viết
-router.get('/', async (req, res) => {
+router.get('/',kiemTraQuyenAdmin, async (req, res) => {
     try {
         const bvSnapshot = await db.collection('baiviet').get();
         const bv = await Promise.all(bvSnapshot.docs.map(async (doc) => {
@@ -39,6 +45,8 @@ router.get('/', async (req, res) => {
 router.get('/them', async (req, res) => {
     try {
         const snapshot = await db.collection('chude').get();
+        const maNguoiDung = req.session.MaNguoiDung;
+        if (!maNguoiDung) return res.redirect('/dangnhap');
         const cd = [];
         snapshot.forEach(doc => {
             cd.push({ id: doc.id, ...doc.data() });
@@ -101,6 +109,8 @@ router.get('/cuatoi', async (req, res) => {
 router.get('/xoa/:id', async (req, res) => {
     try {
         const id = req.params.id;
+        const maNguoiDung = req.session.MaNguoiDung;
+        if (!maNguoiDung) return res.redirect('/dangnhap');
         await db.collection('baiviet').doc(id).delete();
         res.redirect('/baiviet');
     } catch (error) {
@@ -108,7 +118,7 @@ router.get('/xoa/:id', async (req, res) => {
     }
 });
 
-router.get('/duyet/:id', async (req, res) => {
+router.get('/duyet/:id',kiemTraQuyenAdmin, async (req, res) => {
     try {
         const id = req.params.id;
         const doc = await db.collection('baiviet').doc(id).get();
@@ -195,6 +205,8 @@ router.get('/chitiet/:id', async (req, res) => {
 router.get('/sua/:id', async (req, res) => {
     try {
         const id = req.params.id;
+        const maNguoiDung = req.session.MaNguoiDung;
+        if (!maNguoiDung) return res.redirect('/dangnhap');
         const doc = await db.collection('baiviet').doc(id).get();
         if (!doc.exists) {
             return res.status(404).send('Không tìm thấy bài viết');

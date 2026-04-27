@@ -37,7 +37,6 @@ app.use(async (req, res, next) => {
         next();
     }
 });
-
 // 4. Khai báo Router
 var indexRouter = require('./routers/index');
 var authRouter = require('./routers/auth');
@@ -50,8 +49,8 @@ app.use('/chude', chudeRouter);     // Trang quản lý chủ đề
 app.use('/taikhoan', taikhoanRouter); // Trang quản lý tài khoản
 app.use('/baiviet', baivietRouter);   // Trang quản lý bài viết
 app.use('/timkiem',timkiemRouter);
-app.use('/', authRouter);         // Gom auth vào /auth cho sạch (ví dụ: /auth/dangnhap)
-app.use('/', indexRouter);            // Route mặc định để dưới cùng
+app.use('/', authRouter);         
+app.use('/', indexRouter);           
 
 app.listen(3000, () => {
 

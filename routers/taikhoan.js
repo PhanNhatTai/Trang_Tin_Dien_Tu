@@ -2,9 +2,14 @@ var express = require('express');
 var router = express.Router();
 var bcrypt = require('bcryptjs');
 const { db } = require('../firebase'); 
-
+const kiemTraQuyenAdmin = (req, res, next) => {
+    if (req.session && req.session.QuyenHan === 'admin') {
+        return next();
+    }
+    res.redirect('/'); 
+}
 // GET: Danh sách tài khoản
-router.get('/', async (req, res) => {
+router.get('/',kiemTraQuyenAdmin, async (req, res) => {
     try {
         const snapshot = await db.collection('taikhoan').get();
         const tk = [];
@@ -18,7 +23,7 @@ router.get('/', async (req, res) => {
 });
 
 //Get: Thêm tài khoản
-router.get('/them', (req, res) => {
+router.get('/them',kiemTraQuyenAdmin, (req, res) => {
     res.render('taikhoan_them', { title: 'Thêm tài khoản' });
 });
 
@@ -127,7 +132,7 @@ router.post('/doimatkhau', async (req, res) => {
 });
 
 // GET: Sửa tài khoản
-router.get('/sua/:id', async (req, res) => {
+router.get('/sua/:id',kiemTraQuyenAdmin, async (req, res) => {
     try {
         const id = req.params.id;
         const doc = await db.collection('taikhoan').doc(id).get();
@@ -171,7 +176,7 @@ router.post('/sua/:id', async (req, res) => {
 });
 
 // GET: Xóa tài khoản
-router.get('/xoa/:id', async (req, res) => {
+router.get('/xoa/:id',kiemTraQuyenAdmin, async (req, res) => {
     try {
         const id = req.params.id;
         const doc = await db.collection('taikhoan').doc(id).get();

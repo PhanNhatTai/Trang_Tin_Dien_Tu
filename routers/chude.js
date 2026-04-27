@@ -2,9 +2,14 @@ var express = require('express');
 var router = express.Router();
 
 const { db } = require('../firebase'); 
-
+const kiemTraQuyenAdmin = (req, res, next) => {
+    if (req.session && req.session.QuyenHan === 'admin') {
+        return next();
+    }
+    res.redirect('/'); 
+}
 // GET: Danh sách chủ đề
-router.get('/', async (req, res) => {
+router.get('/',kiemTraQuyenAdmin, async (req, res) => {
     try {
         const snapshot = await db.collection('chude').get();
         const cd = [];
@@ -22,7 +27,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET: Thêm chủ đề 
-router.get('/them', (req, res) => {
+router.get('/them',kiemTraQuyenAdmin, (req, res) => {
     res.render('chude_them', {
         title: 'Thêm chủ đề'
     });
@@ -43,7 +48,7 @@ router.post('/them', async (req, res) => {
 });
 
 // GET: Sửa chủ đề 
-router.get('/sua/:id', async (req, res) => {
+router.get('/sua/:id',kiemTraQuyenAdmin, async (req, res) => {
     try {
         var id = req.params.id;     
         const doc = await db.collection('chude').doc(id).get();      
@@ -76,7 +81,7 @@ router.post('/sua/:id', async (req, res) => {
 });
 
 // GET: Xóa chủ đề
-router.get('/xoa/:id', async (req, res) => {
+router.get('/xoa/:id',kiemTraQuyenAdmin, async (req, res) => {
     try {
         var id = req.params.id;
      
