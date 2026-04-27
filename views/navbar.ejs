@@ -4,10 +4,10 @@
 
         <div class="flex-grow-1 mx-5 d-none d-md-block">
             <form class="d-flex" action="/timkiem" method="GET">
-                <input class="form-control me-0 border-0" type="search" name="q" placeholder="Tìm tin tức..." 
-                       style="border-radius: 20px 0 0 20px; padding-left: 20px;">
-                <button class="btn btn-light" type="submit" 
-                        style="border-radius: 0 20px 20px 0; padding-right: 20px; background: #fff; color: #2c3e50;">
+                <input class="form-control me-0 border-0" type="search" name="q" placeholder="Tìm tin tức..."
+                    style="border-radius: 20px 0 0 20px; padding-left: 20px;">
+                <button class="btn btn-light" type="submit"
+                    style="border-radius: 0 20px 20px 0; padding-right: 20px; background: #fff; color: #2c3e50;">
                     <i class="bi bi-search"></i>
                 </button>
             </form>
@@ -30,20 +30,20 @@
                         <i class="bi bi-compass"></i> Mục Lục
                     </a>
                     <ul class="dropdown-menu">
-                        <% if(typeof dsChuDe !=='undefined' && dsChuDe.length > 0) { %>
+                        <% if(typeof dsChuDe !=='undefined' && dsChuDe.length> 0) { %>
                             <% dsChuDe.forEach(cd=> { %>
                                 <li>
                                     <a class="dropdown-item" href="/chude/<%= cd.TenChuDe.trim() %>">
                                         <%= cd.TenChuDe %>
                                     </a>
                                 </li>
-                            <% }); %>
-                        <% } else { %>
-                            <li><a class="dropdown-item" href="#">Đang cập nhật...</a></li>
-                        <% } %>
+                                <% }); %>
+                                    <% } else { %>
+                                        <li><a class="dropdown-item" href="#">Đang cập nhật...</a></li>
+                                        <% } %>
                     </ul>
                 </li>
-                </ul>
+            </ul>
 
             <ul class="navbar-nav ms-auto align-items-center">
                 <% if(!session || typeof session.MaNguoiDung==="undefined" ) { %>
@@ -51,38 +51,59 @@
                         <a class="nav-link fs-5" href="/dangky"><i class="bi bi-person-plus-fill"></i> Đăng ký</a>
                     </li>
                     <li class="nav-item ms-lg-3">
-                        <a class="nav-link fs-5 btn btn-outline-light px-3 py-1 mt-1 mt-lg-0" href="/dangnhap" style="border-radius: 20px;">
+                        <a class="nav-link fs-5 btn btn-outline-light px-3 py-1 mt-1 mt-lg-0" href="/dangnhap"
+                            style="border-radius: 20px;">
                             <i class="bi bi-box-arrow-in-right"></i> Đăng nhập
                         </a>
                     </li>
-                <% } else { %>
-                    <% if(session.QuyenHan=="admin" ) { %>
-                        <li class="nav-item dropdown me-3">
-                            <a class="nav-link dropdown-toggle fs-5" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="bi bi-gear"></i> Quản lý
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="/chude"><i class="bi bi-card-checklist"></i> Chủ đề</a></li>
-                                <li><a class="dropdown-item" href="/taikhoan"><i class="bi bi-people"></i> Tài khoản</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/baiviet"><i class="bi bi-file-earmark-richtext"></i> Bài viết</a></li>
-                            </ul>
-                        </li>
-                    <% } %>
+                    <% } else { %>
+                        <% if(session.QuyenHan=="admin" ) { %>
+                            <li class="nav-item dropdown me-3">
+                                <a class="nav-link dropdown-toggle fs-5" href="#" role="button"
+                                    data-bs-toggle="dropdown">
+                                    <i class="bi bi-gear"></i> Quản lý
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="/chude"><i class="bi bi-card-checklist"></i> Chủ
+                                            đề</a></li>
+                                    <li><a class="dropdown-item" href="/taikhoan"><i class="bi bi-people"></i> Tài
+                                            khoản</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="/baiviet"><i
+                                                class="bi bi-file-earmark-richtext"></i> Bài viết</a></li>
+                                </ul>
+                            </li>
+                            <% } %>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle fs-5" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle"></i> <%= session.TenDangNhap %>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="/baiviet/them"><i class="bi bi-file-earmark-plus"></i> Đăng bài</a></li>
-                            <li><a class="dropdown-item" href="/baiviet/cuatoi"><i class="bi bi-journal-bookmark"></i> Bài viết của tôi</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/taikhoan/hoso"><i class="bi bi-person-badge"></i> Hồ sơ</a></li>
-                            <li><a class="dropdown-item text-danger" href="/dangxuat"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
-                        </ul>
-                    </li>
-                <% } %>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle d-flex align-items-center fs-5" href="#"
+                                        role="button" data-bs-toggle="dropdown">
+                                        <% if (session.HinhAnh && session.HinhAnh !=='' ) { %>
+                                            <img src="<%= session.HinhAnh %>" class="rounded-circle me-2"
+                                                style="width: 32px; height: 32px; object-fit: cover; border: 1px solid #ddd;"
+                                                onerror="this.src='/images/default-avatar.png';">
+                                            <% } else { %>
+                                                <i class="bi bi-person-circle me-2"></i>
+                                                <% } %>
+                                                    <%= session.TenDangNhap %>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="/baiviet/them"><i
+                                                    class="bi bi-file-earmark-plus"></i> Đăng bài</a></li>
+                                        <li><a class="dropdown-item" href="/baiviet/cuatoi"><i
+                                                    class="bi bi-journal-bookmark"></i> Bài viết của tôi</a></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li><a class="dropdown-item" href="/taikhoan/hoso"><i
+                                                    class="bi bi-person-badge"></i> Hồ sơ</a></li>
+                                        <li><a class="dropdown-item text-danger" href="/dangxuat"><i
+                                                    class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
+                                    </ul>
+                                </li>
+                                <% } %>
             </ul>
         </div>
     </div>

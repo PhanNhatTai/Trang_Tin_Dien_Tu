@@ -12,8 +12,13 @@ router.get('/dangky', (req, res) => {
 // POST: Đăng ký 
 router.post('/dangky', async (req, res) => {
     try {
-        const { TenDangNhap, MatKhau, HoVaTen } = req.body;
-
+        const { TenDangNhap, MatKhau,XacNhanMatKhau, HoVaTen } = req.body;
+        if (MatKhau !== XacNhanMatKhau) {
+            return res.render('dangky', { 
+                title: 'Đăng ký',
+                error: 'Mật khẩu và xác nhận mật khẩu không khớp!'
+                });
+        }
         //Kiểm tra xem TenDangNhap đã tồn tại hay chưa
         const userCheck = await db.collection('taikhoan')
             .where('TenDangNhap', '==', TenDangNhap)
@@ -24,9 +29,9 @@ router.post('/dangky', async (req, res) => {
             return res.render('dangky', { 
                 title: 'Đăng ký',
                 error: 'Tên đăng nhập này đã có người sử dụng. Vui lòng chọn tên khác!',
-                oldData: req.body
             });
         }
+        
         const salt = bcrypt.genSaltSync(10);
         const data = {
             HoVaTen: req.body.HoVaTen,
@@ -41,7 +46,8 @@ router.post('/dangky', async (req, res) => {
         req.session.MaNguoiDung = docRef.id; 
         req.session.HoVaTen = data.HoVaTen;
         req.session.QuyenHan = data.QuyenHan;
-        req.session.TenDangNhap = data.TenDangNhap
+        req.session.TenDangNhap = data.TenDangNhap;
+        req.session.HinhAnh = data.HinhAnh;
         req.session.save(() => {
             res.redirect('/');
         });
@@ -87,6 +93,7 @@ router.post('/dangnhap', async (req, res) => {
         req.session.HoVaTen = user.HoVaTen;
         req.session.QuyenHan = user.QuyenHan;
         req.session.TenDangNhap = user.TenDangNhap;
+        req.session.HinhAnh = user.HinhAnh;
         req.session.save(() => {
             res.redirect('/');
         });

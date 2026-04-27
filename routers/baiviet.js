@@ -147,6 +147,7 @@ router.get('/chitiet/:id', async (req, res) => {
             dsBinhLuan.push({
                 id: blDoc.id,
                 ...blData,
+                HinhAnh: blData.HinhAnh || null,
                 NgayHienThi: blData.NgayBinhLuan ? (blData.NgayBinhLuan.toDate ? blData.NgayBinhLuan.toDate().toLocaleString('vi-VN') : new Date(blData.NgayBinhLuan).toLocaleString('vi-VN')) : ''
             });
         });
@@ -238,6 +239,7 @@ router.post('/binhluan/:id', async (req, res) => {
         const maND = req.session.MaNguoiDung || null;
         const tenDN = req.session.TenDangNhap || null;
         const hoTenTuSession = req.session.HoTen || null;
+        const hinhAnhTuSession = req.session.HinhAnh || null;
         const { HoTen, NoiDungBL } = req.body;
         const tenHienThi = hoTenTuSession || tenDN || HoTen || "Người dùng ẩn danh";
         await db.collection('binhluan').add({
@@ -245,6 +247,7 @@ router.post('/binhluan/:id', async (req, res) => {
             MaTaiKhoan: maND,    
             HoTen: tenHienThi,     
             TenDangNhap: tenDN,    
+            HinhAnh: hinhAnhTuSession,
             NoiDungBL: NoiDungBL,
             NgayBinhLuan: new Date() 
         });

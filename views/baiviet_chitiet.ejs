@@ -136,17 +136,21 @@
                                 <% if (typeof binhluan !=='undefined' && binhluan.length> 0) { %>
                                     <% binhluan.forEach(bl=> { %>
                                         <% let userHienTai=(typeof tenNguoiDung !=='undefined' ) ? tenNguoiDung : null;
-                                            let quyenHienTai=(typeof quyenHan !=='undefined' ) ? quyenHan : 'user' ; 
-                                            let laChuBinhLuan=(userHienTai && userHienTai===bl.TenDangNhap); 
-                                            let laChuBaiViet=(userHienTai && userHienTai===baiviet.TenDangNhap); 
-                                            let laAdmin=(quyenHienTai==='admin' ); 
-                                            let coQuyenXoa=(laChuBinhLuan || laChuBaiViet || laAdmin); 
-                                            let coQuyenSua=laChuBinhLuan; %>
+                                            let quyenHienTai=(typeof quyenHan !=='undefined' ) ? quyenHan : 'user' ; let
+                                            laChuBinhLuan=(userHienTai && userHienTai===bl.TenDangNhap); let
+                                            laChuBaiViet=(userHienTai && userHienTai===baiviet.TenDangNhap); let
+                                            laAdmin=(quyenHienTai==='admin' ); let coQuyenXoa=(laChuBinhLuan ||
+                                            laChuBaiViet || laAdmin); let coQuyenSua=laChuBinhLuan; %>
 
                                             <div class="d-flex mb-3 bg-white p-3 rounded border comment-item shadow-sm">
                                                 <div class="flex-shrink-0">
-                                                    <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(bl.HoTen) %>&background=random"
-                                                        class="rounded-circle" width="45">
+                                                    <% if (bl.HinhAnh && bl.HinhAnh !=='' ) { %>
+                                                        <img src="<%= bl.HinhAnh %>" class="rounded-circle me-3"
+                                                            style="width: 45px; height: 45px; object-fit: cover;"
+                                                            onerror="this.src='/images/default-avatar.png';">
+                                                        <% } else { %>
+                                                            <i class="bi bi-person-circle fs-2 me-3 text-secondary"></i>
+                                                            <% } %>
                                                 </div>
                                                 <div class="ms-3 w-100">
                                                     <div class="d-flex justify-content-between align-items-center">

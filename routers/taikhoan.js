@@ -25,7 +25,13 @@ router.get('/them', (req, res) => {
 // POST: Thêm tài khoản
 router.post('/them', async (req, res) => {
     try {
-        const { TenDangNhap, MatKhau, HoVaTen } = req.body;
+        const { TenDangNhap, MatKhau,XacNhanMatKhau, HoVaTen } = req.body;
+        if (MatKhau !== XacNhanMatKhau) {
+            return res.render('dangky', { 
+                title: 'Đăng ký',
+                error: 'Mật khẩu và xác nhận mật khẩu không khớp!'
+                });
+        }
         const userCheck = await db.collection('taikhoan')
             .where('TenDangNhap', '==', TenDangNhap)
             .get();
@@ -40,7 +46,7 @@ router.post('/them', async (req, res) => {
         const data = {
             HoVaTen: req.body.HoVaTen,
             Email: req.body.Email,
-            HinhAnh: req.body.HinhAnh,
+            HinhAnh: req.body.HinhAnh || "",
             TenDangNhap: req.body.TenDangNhap,
             MatKhau: bcrypt.hashSync(req.body.MatKhau, salt),
             QuyenHan: req.body.QuyenHan, 
@@ -82,12 +88,13 @@ router.post('/capnhat-hoso', async (req, res) => {
         if (!userId) return res.redirect('/dangnhap');
         const data = {
             HoVaTen: req.body.HoVaTen,
-            Email: req.body.Email,
-            HinhDaiDien: req.body.HinhDaiDien,
+            Email: req.body.Email || "",
+            HinhAnh: req.body.HinhAnh || "",
             TenDangNhap: req.body.TenDangNhap
         };
         await db.collection('taikhoan').doc(userId).update(data);
-        req.session.HoVaTen = data.HoVaTen;
+        req.session.HinhAnh = data.HinhAnh;
+        req.session.TenDangNhap = data.TenDangNhap;
         res.send("<script>alert('Cập nhật thông tin thành công!'); window.location.href='/taikhoan/hoso';</script>");
     } catch (error) {
         console.error(error);
@@ -145,8 +152,8 @@ router.post('/sua/:id', async (req, res) => {
         const salt = bcrypt.genSaltSync(10);
         const data = {
             HoVaTen: req.body.HoVaTen,
-            Email: req.body.Email,
-            HinhDaiDien: req.body.HinhDaiDien, 
+            Email: req.body.Email ,
+            HinhAnh: req.body.HinhAnh || "", 
             TenDangNhap: req.body.TenDangNhap,
             QuyenHan: req.body.QuyenHan,
             KichHoat: parseInt(req.body.KichHoat) 
