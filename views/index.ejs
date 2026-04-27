@@ -41,14 +41,18 @@
                         <div class="carousel-inner">
                             <% tinNoiBat.forEach((item, index)=> { %>
                                 <div class="carousel-item <%= index === 0 ? 'active' : '' %>" data-bs-interval="5000">
+                                    <a href="/baiviet/chitiet/<%= item.id %>">
                                     <div class="ratio ratio-21x9">
                                         <img src="<%= item.HinhAnhDauTien %>" class="d-block w-100"
-                                            style="object-fit: cover;" onerror="this.src='/images/noimage.png';">
-                                    </div>
+                                            style="object-fit: cover;" onerror="this.src='/images/noimage.png';">                                                                     
+                                        </div>
+                                         </a>
                                     <div class="carousel-caption d-none d-md-block"
-                                        style="background: rgba(0,0,0,0.4); border-radius: 10px;">
+                                        style="background: rgba(0,0,0,0.4); border-radius: 10px;">                 
                                         <h3 class="fw-bold">
+                                            <a href="/baiviet/chitiet/<%= item.id %>" class="text-white text-decoration-none" >
                                             <%= item.TieuDe %>
+                                        </a>
                                         </h3>
                                         <p>
                                             <%= item.TomTat %>
@@ -84,12 +88,14 @@
                                             <div class="card border-0 shadow-sm h-100 featured-card">
                                                 <div class="row g-0 align-items-center">
                                                     <div class="col-md-4">
+                                                        <a href="/baiviet/chitiet/<%= item.id %>">
                                                         <div class="ratio ratio-4x3">
                                                             <img src="<%= item.HinhAnhDauTien %>"
                                                                 class="img-fluid rounded-start"
                                                                 style="object-fit: cover;"
                                                                 onerror="this.src='/images/noimage.png';">
                                                         </div>
+                                                        </a>
                                                     </div>
                                                     <div class="col-md-8">
                                                         <div class="card-body">
@@ -151,9 +157,11 @@
                                             </div>
                                             <% tinDaDoc.forEach(item=> { %>
                                                 <div class="d-flex mb-3 align-items-start border-bottom pb-2">
+                                                    <a href="/baiviet/chitiet/<%= item.id %>">
                                                     <img src="<%= item.HinhAnhDauTien %>" class="rounded"
                                                         style="width: 70px; height: 50px; object-fit: cover;"
                                                         onerror="this.src='/images/noimage.png';">
+                                                    </a>
                                                     <div class="ms-3">
                                                         <h6 class="mb-0 fw-bold" style="font-size: 0.85rem;">
                                                             <a href="/baiviet/chitiet/<%= item.id %>"
