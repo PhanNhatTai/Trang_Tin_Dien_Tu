@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = 9; 
         const skip = (page - 1) * limit;
-        const snapshot = await db.collection('baiviet').get();
+        const snapshot = await db.collection('baiviet').where('KiemDuyet', '==', 1).get();
         const tatCa = snapshot.docs.map(doc => {
             const data = doc.data();
             return { 

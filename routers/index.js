@@ -72,7 +72,8 @@ router.get('/chude/:ten', async (req, res) => {
         const limit = 9; 
         const skip = (page - 1) * limit;
         const snapshot = await db.collection('baiviet')
-            .where('TenChuDe', '==', tenChuDe) 
+            .where('KiemDuyet', '==', 1)
+            .where('TenChuDe', '==', tenChuDe)
             .get();
           const dsBaiViet = snapshot.docs.map(doc => {
             const data = doc.data();
