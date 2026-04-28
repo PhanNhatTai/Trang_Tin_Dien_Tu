@@ -4,18 +4,18 @@ const admin = require('firebase-admin');
 const { db } = require('../firebase');
 
 function layAnhDauTien(content) {
-    const regex = /<img.*?src="(.*?)"/; 
+    const regex = /<img.*?src="(.*?)"/;
     const match = content.match(regex);
-    return match ? match[1] : "/images/noimage.png"; 
+    return match ? match[1] : "/images/noimage.png";
 }
 const kiemTraQuyenAdmin = (req, res, next) => {
     if (req.session && req.session.QuyenHan === 'admin') {
         return next();
     }
-    res.redirect('/'); 
+    res.redirect('/');
 }
 // GET: Danh sách bài viết
-router.get('/',kiemTraQuyenAdmin, async (req, res) => {
+router.get('/', kiemTraQuyenAdmin, async (req, res) => {
     try {
         const bvSnapshot = await db.collection('baiviet').get();
         const bv = await Promise.all(bvSnapshot.docs.map(async (doc) => {
@@ -62,7 +62,7 @@ router.post('/them', async (req, res) => {
     try {
         const maND = req.session.MaNguoiDung;
         const data = {
-            TenChuDe: req.body.TenChuDe, 
+            TenChuDe: req.body.TenChuDe,
             TieuDe: req.body.TieuDe,
             TomTat: req.body.TomTat,
             NoiDung: req.body.NoiDung,
@@ -118,7 +118,7 @@ router.get('/xoa/:id', async (req, res) => {
     }
 });
 
-router.get('/duyet/:id',kiemTraQuyenAdmin, async (req, res) => {
+router.get('/duyet/:id', kiemTraQuyenAdmin, async (req, res) => {
     try {
         const id = req.params.id;
         const doc = await db.collection('baiviet').doc(id).get();
@@ -166,6 +166,14 @@ router.get('/chitiet/:id', async (req, res) => {
             const dateObj = data.NgayDang.toDate ? data.NgayDang.toDate() : new Date(data.NgayDang);
             ngayDangHienThi = dateObj.toLocaleString('vi-VN');
         }
+        const chuDeSnap = await db.collection('chude')
+            .where('TenChuDe', '==', data.TenChuDe)
+            .limit(1)
+            .get();
+        let idCuaChuDe = "";
+        if (!chuDeSnap.empty) {
+            idCuaChuDe = chuDeSnap.docs[0].id;
+        }
         const bv = {
             id: updatedDoc.id,
             ...data,
@@ -193,6 +201,7 @@ router.get('/chitiet/:id', async (req, res) => {
             baiviet: bv,
             binhluan: dsBinhLuan,
             tenNguoiDung: req.session.TenDangNhap || null,
+            idCuaChuDe: idCuaChuDe,
             quyenHan: req.session.QuyenHan || 'user'
         });
     } catch (error) {
@@ -234,11 +243,11 @@ router.post('/sua/:id', async (req, res) => {
             TieuDe: req.body.TieuDe,
             TomTat: req.body.TomTat,
             NoiDung: req.body.NoiDung,
-            TenChuDe: req.body.TenChuDe, 
+            TenChuDe: req.body.TenChuDe,
         };
-const returnUrl = req.body.returnUrl || '/';
+        const returnUrl = req.body.returnUrl || '/';
         await db.collection('baiviet').doc(id).update(data);
-        res.redirect(returnUrl); 
+        res.redirect(returnUrl);
     } catch (error) {
         console.error("Lỗi cập nhật bài viết:", error);
         res.redirect('/baiviet');
@@ -256,12 +265,12 @@ router.post('/binhluan/:id', async (req, res) => {
         const tenHienThi = hoTenTuSession || tenDN || HoTen || "Người dùng ẩn danh";
         await db.collection('binhluan').add({
             MaBaiViet: idBaiViet,
-            MaTaiKhoan: maND,    
-            HoTen: tenHienThi,     
-            TenDangNhap: tenDN,    
+            MaTaiKhoan: maND,
+            HoTen: tenHienThi,
+            TenDangNhap: tenDN,
             HinhAnh: hinhAnhTuSession,
             NoiDungBL: NoiDungBL,
-            NgayBinhLuan: new Date() 
+            NgayBinhLuan: new Date()
         });
         res.redirect(`/baiviet/chitiet/${idBaiViet}`);
     } catch (error) {
@@ -275,7 +284,7 @@ router.get('/binhluan/xoa/:id', async (req, res) => {
         const idBL = req.params.id;
         const idBaiViet = req.query.idBaiViet;
         await db.collection('binhluan').doc(idBL).delete();
-        
+
         res.redirect(`/baiviet/chitiet/${idBaiViet}`);
     } catch (error) {
         res.redirect('/error');
@@ -288,7 +297,7 @@ router.post('/binhluan/sua/:id', async (req, res) => {
         const { NoiDungMoi, idBaiViet } = req.body;
         await db.collection('binhluan').doc(idBL).update({
             NoiDungBL: NoiDungMoi,
-            NgaySua: new Date() 
+            NgaySua: new Date()
         });
         res.redirect(`/baiviet/chitiet/${idBaiViet}`);
     } catch (error) {
