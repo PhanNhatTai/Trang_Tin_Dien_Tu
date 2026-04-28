@@ -64,23 +64,16 @@ router.use(async (req, res, next) => {
 });
 
 // GET: Lọc bài viết theo tên chủ đề
-router.get('/chude/:id', async (req, res) => {
+router.get('/chude/:ten', async (req, res) => {
     try {
         const tinDaDoc = req.session.history || [];
-        const idChuDe = req.params.id;
+        const tenChuDe = req.params.ten;
         const page = parseInt(req.query.page) || 1;
         const limit = 9; 
         const skip = (page - 1) * limit;
-        const chuDeDoc = await db.collection('chude').doc(idChuDe).get();
-        
-        if (!chuDeDoc.exists) {
-            return res.redirect('/error'); // Hoặc báo lỗi không tìm thấy chủ đề
-        }
-        const dataChuDe = chuDeDoc.data();
-        const tenChuDeThucTe = dataChuDe.TenChuDe;
         const snapshot = await db.collection('baiviet')
             .where('KiemDuyet', '==', 1)
-            .where('TenChuDe', '==', tenChuDeThucTe)
+            .where('TenChuDe', '==', tenChuDe)
             .get();
           const dsBaiViet = snapshot.docs.map(doc => {
             const data = doc.data();
@@ -95,14 +88,13 @@ router.get('/chude/:id', async (req, res) => {
         const totalPages = Math.ceil(totalPosts / limit);
         const ketQuaPhanTrang = dsBaiViet.slice(skip, skip + limit);
         res.render('index', { 
-            title: 'Chuyên mục: ' + tenChuDeThucTe,
+            title: 'Chuyên mục: ' + tenChuDe,
             baiviet: ketQuaPhanTrang,
             currentPage: page,
             tinNoiBat: tinNoiBat,
             tinDaDoc: tinDaDoc.slice(0, 3),
             totalPages: totalPages,
-            currentTenChuDe: tenChuDeThucTe,
-            currentIdChuDe: idChuDe
+            currentTenChuDe: tenChuDe    
         });
     } catch (error) {
         console.error("Lỗi lọc chủ đề:", error);
